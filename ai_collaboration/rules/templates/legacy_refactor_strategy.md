@@ -166,14 +166,14 @@ OrderService
 
 ### 4.2 数据迁移
 
-- 编写迁移脚本存放在 `ai_collaboration/scripts/db/` 目录
+- 编写迁移脚本存放在 `./ai_collaboration/scripts/db/` 目录
 - 迁移脚本需有回滚脚本
 - 大数据量迁移需分批执行
 - 迁移前备份相关数据
 
 ## 5. 重构记录
 
-建议在 `ai_collaboration/docs/reports/` 目录下创建重构记录文档，记录：
+建议在 `./ai_collaboration/docs/` 目录下创建重构记录文档，记录：
 
 - 重构原因和目标
 - 影响范围评估

@@ -87,5 +87,5 @@ OrderService ↔ DistributionService
 
 ## 5. 参考文档
 
-- 详细的依赖分析报告：`ai_collaboration/docs/reports/模块依赖关系分析报告-第一步.md`
-- 影响分析报告：`ai_collaboration/docs/reports/关键模块依赖影响分析-第二步.md`
+- 详细的依赖分析报告：`./ai_collaboration/docs/reports/模块依赖关系分析报告-第一步.md`
+- 影响分析报告：`./ai_collaboration/docs/reports/关键模块依赖影响分析-第二步.md`

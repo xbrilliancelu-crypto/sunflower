@@ -1,175 +1,234 @@
-# Sunflower（向日葵）- AI研发协作脚手架 v2.0
+# Sunflower - 向日葵AI研发协作脚手架 v1.1
 
-> 一套结构化的 AI 协作编程规范体系，通过渐进式加载、Skill 驱动、工作流编排，实现高效、规范的 AI 辅助开发体验。
+> 版本: v1.1  
+> 让AI像向日葵追光一样，高效协作完成研发任务
 
 ---
 
-## 概述
+## 项目简介
 
-本脚手架为 AI 辅助编程提供完整的规范体系和协作框架。通过分层架构设计，将开发过程分解为多个可独立执行的 Skill（技能），并定义了标准的工作流编排规则，确保 AI 在理解需求、设计方案、编码实现、测试验证等各阶段都能输出符合规范的高质量结果。
+**Sunflower（向日葵）** 是一套结构化的 AI 协作编程规范体系，旨在为 AI 辅助编程提供完整的规范框架和协作流程。通过"方案先行、任务拆解、逐步落地"的协作范式，确保 AI 与开发人员高效协作，输出符合规范的高质量代码。
 
-### 核心特性
+---
 
-- **🎯 Skill 驱动**：基于意图识别自动路由到对应的工作区，7个核心技能覆盖完整开发流程
-- **📊 渐进式加载**：四层架构按需加载规范文档，避免上下文过载
-- **🔄 工作流编排**：支持单 Skill 执行和多 Skill 协作，预定义标准工作流
-- **📝 历史代码支持**：针对遗留系统的风险评估和渐进式重构策略
-- **🔧 端侧规范分离**：后端/Web/移动端技术规范独立管理
-- **📈 Mermaid 统一图例**：所有文档图表使用 Mermaid 语法
+## 设计理念
+
+### 核心思想
+
+向日葵追光的特性隐喻了 AI 协作的理想状态——**目标明确、路径清晰、持续追踪**：
+
+- **🎯 目标明确**：从需求理解开始，明确"要做什么"
+- **📋 路径清晰**：详细设计方案先行，任务拆解规划
+- **✅ 持续追踪**：完成一项勾选一项，全程留痕管理
+
+### 协作范式
+
+```mermaid
+flowchart LR
+    A[需求理解] --> B[方案设计]
+    B --> C[任务拆解]
+    C --> D[编码落地]
+    D --> E[完成勾选]
+    E --> F{任务完成?}
+    F -->|否| D
+    F -->|是| G[提交验收]
+```
+
+**核心原则**：
+1. **设计方案先行**：每次落地编码前，先进行详细设计梳理和任务规划
+2. **文档驱动**：生成设计方案、任务列表、接口文档，供开发人员确认
+3. **留痕管理**：完成一个任务勾选一项，确保进度可追踪
+4. **规范约束**：所有开发活动遵循技术规范和架构设计要求
+
+---
+
+## 项目结构
+
+```
+sunflower/
+├── backend/              # 后端服务代码
+├── web/                  # Web 端代码（管理后台）
+├── mobile/               # 移动端代码（H5/小程序/App）
+├── ai_collaboration/     # AI 协作框架（核心）
+│   ├── docs/            # 文档资料区
+│   │   ├── detail_solutions/   # 详细技术方案
+│   │   ├── api_docs/           # 接口定义文档
+│   │   ├── sprints/            # 冲刺需求说明
+│   │   └── reports/            # 分析报告
+│   ├── rules/           # 规范约束区
+│   │   ├── base_rules.md       # 协作范式与路由逻辑
+│   │   ├── arch_solutions.md   # 架构设计规范
+│   │   ├── tech_structure_*.md # 各端技术规范
+│   │   └── templates/          # 设计方案模板
+│   ├── tasks/           # 任务规划区
+│   └── scripts/         # 脚本工具区
+└── README.md            # 本文档
+```
 
 ---
 
 ## 快速开始
 
-### 1. 了解协作流程
+### 1. 理解协作范式
 
-AI 首先加载 `ai_collaboration/rules/base_rules.md`，根据用户输入识别意图：
+AI 协作遵循"设计方案先行、任务拆解落地"的范式：
 
-```mermaid
-flowchart TD
-    Start[用户输入] --> Q1{明确要做什么?}
-    
-    Q1 -->|否| U1[skill_sprint_understand<br/>需求理解]
-    U1 --> Q1
-    
-    Q1 -->|是| Q2{需要设计方案?}
-    Q2 -->|是| D1[skill_tech_solution_design]
-    Q2 -->|否| Q3{需要写代码?}
-    
-    D1 --> Q3
-    Q3 -->|是| C1[skill_code]
-    Q3 -->|否| Q4{需要自测?}
-    
-    C1 --> Q4
-    Q4 -->|是| T1[skill_self_test]
-    Q4 -->|否| Q5{需要审查?}
-    
-    T1 --> Q5
-    Q5 -->|是| R1[skill_review]
-    Q5 -->|否| Q6{需要提交?}
-    
-    R1 --> Q6
-    Q6 -->|是| CM1[skill_commit]
-    Q6 -->|否| End[结束]
-    
-    CM1 --> End
+- 阅读 `ai_collaboration/rules/base_rules.md` 了解协作流程
+- 参考对应端的技术规范：`tech_structure_backend.md` / `tech_structure_web.md` / `tech_structure_mobile.md`
+- 查看架构设计规范：`ai_collaboration/rules/arch_solutions.md`
+
+### 2. 需求开发流程
+
+#### 2.1 方案设计阶段
+
+```
+需求输入 → 查阅架构规范 → 生成详细设计方案 → 开发确认
 ```
 
-### 2. 执行协作流程
+**输出工件**：`ai_collaboration/docs/detail_solutions/*.md`
 
-识别意图后，加载对应 Skill 的 `SKILL.md`，按流程执行：
+#### 2.2 任务拆解阶段
 
-1. **执行前检查** - 确认前置条件
-2. **按流程执行** - 遵循 Skill 定义的步骤
-3. **引用公共规范** - 按需加载技术规范
-4. **按需加载 references** - 加载明细规范
-5. **输出工件** - 生成标准化的文档或代码
+```
+设计方案 → 任务列表规划 → 接口定义（如需） → 开发确认
+```
+
+**输出工件**：
+- 任务列表：`ai_collaboration/tasks/*.md`
+- 接口文档：`ai_collaboration/docs/api_docs/*.md`
+
+#### 2.3 编码落地阶段
+
+```
+任务列表 → 逐项实现 → 完成勾选 → 全部完成
+```
+
+**执行原则**：完成一个勾选一个，确保进度可追踪
+
+### 3. 历史代码修改
+
+对于有一定历史积累的项目，修改代码时需注意：
+
+1. **变更前评估**：参考 `dependency_analysis.md` 进行风险评估
+2. **最小侵入原则**：优先新增代码，避免修改历史代码
+3. **循环依赖处理**：参考 `legacy_refactor_strategy.md` 进行处理
 
 ---
 
-## 目录结构
+## 技术栈概览（可随意变更各端技术栈 然后AI一键修改内部核心工件技术栈内容）
 
-```
-ai_powered_coding_scaffold/
-├── ai_collaboration/           # AI协作框架核心 ✨
-│   ├── docs/                   # 文档资料区
-│   │   ├── detail_solutions/   # 详细技术方案
-│   │   ├── api_docs/           # 接口定义文档
-│   │   ├── sprints/            # 冲刺需求说明
-│   │   └── reports/            # 分析报告 ✨
-│   ├── rules/                  # 规范约束区
-│   │   ├── base_rules.md       # 入口：意图路由
-│   │   ├── workflow.md         # 工作流编排
-│   │   ├── common/             # 公共规范
-│   │   └── skills/             # Skill 工作区 ✨
-│   ├── tasks/                  # 任务规划区
-│   └── scripts/                # 脚本工具区
-├── backend/                    # 后端工程
-├── web/                        # Web前端工程
-└── mobile/                     # 移动端工程
-```
+### 后端
 
----
+| 组件 | 版本 | 说明 |
+|------|------|------|
+| Java | 17+ | 主语言 |
+| Spring Boot | 3.x | 核心框架 |
+| MyBatis-Plus | 3.5.5+ | ORM框架 |
+| MySQL/PostgreSQL | 8.x+ / 12+ | 数据库 |
 
-## 核心概念
+### Web 端
 
-### Skill 体系
+| 组件 | 版本 | 说明 |
+|------|------|------|
+| React | 18.x | UI框架 |
+| TypeScript | 4.7+ | 类型安全 |
+| Umi | 4.x | 企业级框架 |
+| Ant Design | 5.x | UI组件库 |
 
-7个核心 Skill 覆盖完整开发流程：
+### 移动端
 
-| Skill | 触发关键词 | 核心职责 | 输出工件 |
-|-------|-----------|----------|----------|
-| `skill_sprint_understand` | 需求分析、理解需求 | 冲刺需求理解与分析 | 需求分析文档 |
-| `skill_tech_solution_design` | 设计方案、技术设计 | 技术方案设计（含历史代码评估） | 设计方案文档 |
-| `skill_code` | 编码、实现、开发 | 编码实现 | 代码、任务列表 |
-| `skill_self_test` | 自测、单元测试 | 开发自测 | 测试代码 |
-| `skill_review` | 审查、Code Review | 代码审查 | 审查报告 |
-| `skill_commit` | 提交、commit | 版本管理 | 提交记录 |
-| `skill_docs` | 文档、README | 文档编写 | 文档文件 |
-
-### 渐进式加载架构
-
-四层架构实现按需加载，避免上下文膨胀：
-
-| 层级 | 加载时机 | 内容 | 说明 |
-|------|----------|------|------|
-| 第一层 | 始终加载 | `base_rules.md` | 静态索引层，意图路由 |
-| 第二层 | 意图识别后 | Skill 的 `SKILL.md` | 协作流程、检查点 |
-| 第三层 | 执行过程中 | Skill 内的 `references/` | 详细规范、示例 |
-| 第四层 | 涉及端侧时 | `tech_structure_*.md` | 后端/Web/移动端技术规范 |
-
-### 标准工作流
-
-```mermaid
-graph LR
-    A[需求输入] --> B[需求理解]
-    B --> C[方案设计]
-    C --> D[编码实现]
-    D --> E[开发自测]
-    E --> F[代码审查]
-    F --> G[版本管理]
-    G --> H[文档编写]
-```
-
-### 历史代码改动流程
-
-针对遗留系统，额外执行风险评估：
-
-```mermaid
-graph TD
-    A[识别历史代码改动] --> B[查阅依赖分析报告]
-    B --> C[加载变更风险评估规范]
-    C --> D[加载渐进式重构策略]
-    D --> E[评估风险等级]
-    E --> F[制定重构方案]
-```
+| 组件 | 版本 | 说明 |
+|------|------|------|
+| Taro | 3.6+ | 多端框架 |
+| React | 18.x | UI框架 |
+| TypeScript | 4.x | 类型安全 |
+| Taro UI | 3.x | UI组件库 |
 
 ---
 
-## 路径引用规范
+## 核心文档索引
 
-**所有路径都以 `ai_collaboration/` 为基准目录**：
+### 规范类文档
 
-| 访问目标 | 路径示例 |
-|----------|----------|
-| 设计方案 | `ai_collaboration/docs/detail_solutions/xxx.md` |
-| 分析报告 | `ai_collaboration/docs/reports/xxx.md` |
-| 任务列表 | `ai_collaboration/tasks/xxx.md` |
-| Skill 文档 | `ai_collaboration/rules/skills/skill_xxx/SKILL.md` |
+| 文档 | 路径 | 说明 |
+|------|------|------|
+| 协作范式 | `ai_collaboration/rules/base_rules.md` | AI协作流程与路由逻辑 |
+| 架构设计 | `ai_collaboration/rules/arch_solutions.md` | 系统架构设计规范 |
+| 后端技术规范 | `ai_collaboration/rules/tech_structure_backend.md` | 后端技术栈与工程规范 |
+| Web端技术规范 | `ai_collaboration/rules/tech_structure_web.md` | Web端技术栈与工程规范 |
+| 移动端技术规范 | `ai_collaboration/rules/tech_structure_mobile.md` | 移动端技术栈与工程规范 |
+
+### 模板类文档
+
+| 文档 | 路径 | 说明 |
+|------|------|------|
+| 详细设计方案模板 | `ai_collaboration/rules/templates/detail_solution_template.md` | 方案设计标准格式 |
+| 变更风险评估 | `ai_collaboration/rules/templates/dependency_analysis.md` | 代码修改风险评估 |
+| 渐进式重构策略 | `ai_collaboration/rules/templates/legacy_refactor_strategy.md` | 历史代码重构方案 |
+
+### 输出工件目录
+
+| 目录 | 路径 | 说明 |
+|------|------|------|
+| 详细设计方案 | `ai_collaboration/docs/detail_solutions/` | 存放技术方案文档 |
+| 接口定义文档 | `ai_collaboration/docs/api_docs/` | 存放接口定义 |
+| 任务列表 | `ai_collaboration/tasks/` | 存放任务规划文档 |
+| 需求说明 | `ai_collaboration/docs/sprints/` | 存放冲刺需求 |
 
 ---
 
-## 快速导航
+## 版本管理
 
-| 我想... | 查看文档 |
-|---------|----------|
-| 了解协作流程 | [`ai_collaboration/rules/base_rules.md`](ai_collaboration/rules/base_rules.md) |
-| 查看框架详细说明 | [`ai_collaboration/README.md`](ai_collaboration/README.md) |
-| 设计技术方案 | [`ai_collaboration/rules/skills/skill_tech_solution_design/SKILL.md`](ai_collaboration/rules/skills/skill_tech_solution_design/SKILL.md) |
-| 编写代码 | [`ai_collaboration/rules/skills/skill_code/SKILL.md`](ai_collaboration/rules/skills/skill_code/SKILL.md) |
-| 理解需求 | [`ai_collaboration/rules/skills/skill_sprint_understand/SKILL.md`](ai_collaboration/rules/skills/skill_sprint_understand/SKILL.md) |
-| 修改历史代码 | [`ai_collaboration/rules/skills/skill_tech_solution_design/references/dependency_analysis.md`](ai_collaboration/rules/skills/skill_tech_solution_design/references/dependency_analysis.md) |
-| 查看架构规范 | [`ai_collaboration/rules/common/arch_solutions.md`](ai_collaboration/rules/common/arch_solutions.md) |
+### 分支策略
+
+```
+feature/功能名 → dev → test → master
+```
+
+- `feature/*`：本地开发分支
+- `dev`：开发环境分支
+- `test`：测试环境分支
+- `master`：生产分支
+
+### 版本号规范
+
+- **主版本号**：重大架构变更，不向下兼容
+- **次版本号**：功能新增，向下兼容
+- **修订号**：Bug修复，向下兼容
+
+---
+
+## 质量保障
+
+### 测试策略
+
+| 测试类型 | 工具 | 覆盖率要求 |
+|---------|------|------------|
+| 后端单元测试 | JUnit 5 | >80% |
+| 前端单元测试 | Jest | >70% |
+
+### 代码审查
+
+涉及核心业务模块的修改，必须经过代码审查后方可合并。
+
+---
+
+## 协作边界
+
+AI协作适用于大部分常规开发场景，但在某些复杂场景下需要人工介入：
+
+- 核心架构设计决策
+- 复杂性能优化问题
+- 跨系统依赖梳理
+- 业务规则冲突判断
+
+详细说明请参阅：`ai_collaboration/rules/ai_collaboration_boundary.md`
+
+---
+
+## 许可证
+
+MIT License
 
 ---
 
@@ -177,11 +236,5 @@ graph TD
 
 | 版本 | 日期 | 说明 |
 |------|------|------|
-| v2.0 | 2026-03 | Skill驱动、渐进式加载、历史代码支持、统一路径规范 |
-| v1.0 | 2026-01 | 初始版本，定义核心架构和 Skill 体系 |
-
----
-
-## 许可证
-
-MIT License
+| v1.1 | 2026-03 | 当前版本，优化协作流程和文档结构 |
+| v1.0 | 2026-01 | 初始版本，定义核心架构和协作范式 |
