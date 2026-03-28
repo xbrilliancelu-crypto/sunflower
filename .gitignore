@@ -1,0 +1,183 @@
+# ===================================================================
+# Git 忽略规则配置文件
+# ===================================================================
+
+# ===================================================================
+# Java/Maven 编译产物
+# ===================================================================
+target/
+**/target/**
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Maven 相关
+.mvn/
+mvnw
+mvnw.cmd
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+# ===================================================================
+# 前端构建产物和依赖
+# ===================================================================
+node_modules/
+dist/
+.umi/
+.umi-production/
+build/
+.cache/
+.swc/
+
+# 前端配置
+.env.local
+.env.*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ===================================================================
+# IDE 配置文件
+# ===================================================================
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Eclipse
+.settings/
+.project
+.classpath
+.factorypath
+
+# VSCode
+.vscode/
+*.code-workspace
+
+# NetBeans
+nbproject/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# CodeBuddy
+.codebuddy/figma/
+assets/CodeBubbyAssets/
+
+# ===================================================================
+# 操作系统文件
+# ===================================================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.lnk
+
+# Linux
+*~
+.directory
+
+# ===================================================================
+# 日志文件
+# ===================================================================
+*.log
+logs/
+log/
+
+# ===================================================================
+# 临时文件和缓存
+# ===================================================================
+*.tmp
+*.bak
+*.swp
+*.swo
+*~
+.#*
+\#*#
+
+# 缓存
+.cache/
+.temp/
+tmp/
+temp/
+
+# 备份文件
+*.backup
+*.orig
+*.rej
+~$*
+
+# ===================================================================
+# Git 相关文件
+# ===================================================================
+.git/
+.gitignore.local
+.gitkeep
+
+# ===================================================================
+# 其他
+# ===================================================================
+# 测试覆盖率
+coverage/
+*.cover
+
+# 数据库文件
+*.db
+*.sqlite
+*.sqlite3
+
+# 压缩文件
+*.7z
+*.gz
+*.bz2
+
+# 个人配置（可选，如需忽略）
+# .env
+# config.local.*
+
+# ===================================================================
+# 敏感配置文件
+# ===================================================================
+# 敏感配置文件（密码、token等），不提交到代码库
+**/secrets-*.yml
+**/secrets-*.yaml
+# 保留模板文件
+!**/secrets-template.yml.example
+

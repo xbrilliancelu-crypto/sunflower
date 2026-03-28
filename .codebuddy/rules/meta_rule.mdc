@@ -1,0 +1,9 @@
+---
+description: 
+alwaysApply: true
+enabled: true
+updatedAt: 2026-02-02T01:21:04.929Z
+provider: 
+---
+
+执行所有动作前，都阅读下rules/base_rules.md中的内容，根据其路由逻辑指示，再进一步获取相应系统提示词或背景上下文；
