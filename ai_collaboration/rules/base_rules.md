@@ -77,49 +77,125 @@
 
 > **说明**：本节内容可能根据具体工程情况或路由场景的丰富而变更，置于文档末尾以减少变更对原有逻辑的影响。
 
-case1，ask模式下，或者非ask模式的操作，但意图识别既非子模块级的详细技术方案设计，也非正式编码两种场景时（例如只是针对性地小范围改动）；此类情况下，不自行查找其他默认上下文，只需遵照提示词中的指示，读取指定的背景文档，执行指定的操作；
-而除了上述情况外的场景，就需路由到后面的case，具体执行哪种case，需自行判断；
+### case1，以下场景无需进行复杂的流程校验和文档生成，直接执行即可:
 
-case2，当需要进行某个需求或模块的详细设计方案分析时，需要先阅读顶层架构设计规范，严格遵循架构要求；然后参考详细设计方案模板，进行方案拆解和实现设计，生成对应详细设计方案文档（写入./ai_collaboration/docs/detail_solutions/目录下）；分析过程中需要遵循对应端的技术规范文档；各个参考文件路径如下，
+**触发场景**: 
+1. **ask模式**：用户以提问、咨询、解释、分析意图为主，不涉及实际编码或方案设计落地
+2. **针对性小范围改动**：仅需修改局部代码逻辑、修复单个bug、调整样式等，不涉及模块级或需求级及以上的需求或变动
+3. **文档查询或生成**：仅涉及读取、查看、解释已有文档内容，或生成非技术方案类的常规文档（如README、注释补充等）
+4. **代码解读与分析**：仅需要对某段代码进行解读、分析、解释，不涉及编码实现
+5. **简单重构或优化**：局部代码的重命名、提取公共方法、简单的代码整理等，不涉及架构或跨模块变更
 
+**执行方式**: 此类情况下，不自行查找其他默认上下文，只需遵照提示词中的指示，读取指定的背景文档，执行指定的操作即可。
+
+**路由规则**: 除上述case1场景外，所有意图涉及"子模块级及以上详细技术方案设计"或"正式需求编码落地"或"测试场景初始化"或"单元测试生成"等的场景，必须路由到后续case（case2~case3），具体执行哪种case，需根据用户意图自行判断；严禁将应走后续case的场景降级为case1处理。
+
+### case2，当需要进行某个相对成规模体系的需求或模块的详细设计方案分析时:
+
+**触发场景**: 用户意图包含了对某个需求或模块进行子模块级及以上规模的详细技术方案分析设计、方案拆解或实现设计时；需要先阅读顶层架构设计规范，严格遵循架构要求；然后参考详细设计方案模板，进行方案拆解和实现设计，生成对应详细设计方案文档（写入./ai_collaboration/docs/detail_solutions/目录下）；实现方案及改动内容和方法，需要遵循各端的技术规范文档；
+
+**必要参数**
+- 必要参数1：需求对应的冲刺说明prd文档路径或需求名称（位于./ai_collaboration/docs/sprints/目录下），或直接提供的明确的业务需求描述说明
+【严格执行校验！！】如果必要参数有未提供，则阻断执行，反馈用户必需提供必要参数（并给出所缺参数是什么），用户明确提供后才能正式执行；
+
+**执行步骤**
+1. **前置校验**
+   - 确认必要参数1对应的冲刺需求prd文档已存在并读取，或确认需求描述说明清洗明确
+
+2. **读取背景上下文**
+   - 读取顶层架构设计规范（./ai_collaboration/rules/arch_solutions.md），严格遵循架构要求
+   - 读取后端技术规范文档（./ai_collaboration/rules/tech_structure_backend.md），确保方案遵循技术规范
+   - 读取web端技术规范文档（./ai_collaboration/rules/tech_structure_web.md），确保方案遵循技术规范
+   - 读取mobile端技术规范文档（./ai_collaboration/rules/tech_structure_mobile.md），确保方案遵循技术规范
+
+3. **生成详细设计方案文档**
+   - 参考详细设计方案模板（./ai_collaboration/rules/detail_solution_template.md），进行方案拆解和实现设计
+   - 输出路径：./ai_collaboration/docs/detail_solutions/目录下
+
+4. **提醒务必对详细设计进行确认**
+   - 在详细设计方案文档生成后，提醒用户务必对生成的详细设计方案进行确认和评审
+      - 确认有问题，则需由用户提出对应的修改意见或自行修改并表达确认无误后，完成对应详细方案调整
+      - 必需接收到用户有明确的"确认无误"等类似信息回复，用户提出进入后续case的意图表达才能被接受，否则此时需严格返回并提醒用户还未对详细技术方案明确表达确认，需要手动回复相关信息才可进入后续流程
+
+**参考文档**
 1. 架构设计规范的查找路径：./ai_collaboration/rules/arch_solutions.md
-2. 详细设计方案模板路径：./ai_collaboration/rules/templates/detail_solution_template.md
+2. 详细设计方案模板路径：./ai_collaboration/rules/detail_solution_template.md
 3. 后端技术规范路径：./ai_collaboration/rules/tech_structure_backend.md
-4. Web端技术规范路径：./ai_collaboration/rules/tech_structure_web.md
-5. 移动端技术规范路径：./ai_collaboration/rules/tech_structure_mobile.md
-6. 变更风险评估规范路径：./ai_collaboration/rules/templates/dependency_analysis.md
-7. 渐进式重构策略路径：./ai_collaboration/rules/templates/legacy_refactor_strategy.md
+4. web端技术规范路径：./ai_collaboration/rules/tech_structure_web.md
+5. mobile端技术规范路径：./ai_collaboration/rules/tech_structure_mobile.md
+6. 冲刺需求prd文档路径：./ai_collaboration/ai_collaboration/docs/sprints/目录下
 
-case3，当需要进行具体的需求编码落地时，需要提供相应的详细设计方案文档或明确的方案说明作为前提指导；并读取对应端的技术规范文档作为背景上下文；基于此生成对应的任务列表文档（任务列表项可勾选）和相关接口定义文档（如果有需要接口定义时），供给开发人员进行任务check和参照开发；
+### case3，当需要进行具体的需求编码落地时:
 
-1. 详细设计方案的查找路径：./ai_collaboration/docs/detail_solutions/目录下
-2. 任务列表文档的生成路径：./ai_collaboration/tasks/目录下
-3. 后端技术规范路径：./ai_collaboration/rules/tech_structure_backend.md
-4. Web端技术规范路径：./ai_collaboration/rules/tech_structure_web.md
-5. 移动端技术规范路径：./ai_collaboration/rules/tech_structure_mobile.md
-6. 接口定义文档写入路径：./ai_collaboration/docs/api_docs/目录下
+**触发场景**: 用户意图包含了对某个需求或模块进行正式编码开发落地时（而非仅做小范围改动或ask模式下的操作）；需要提供相应的详细设计方案文档或明确的方案说明作为前提指导，并读取后端技术规范文档作为背景上下文；基于此生成对应的任务列表文档（任务列表项可勾选）和相关接口定义文档（如果有需要接口定义时），供给开发人员进行任务check和参照开发；
+
+**必要参数**
+- 必要参数1：需求对应的详细设计方案文档路径或名称（位于./ai_collaboration/docs/detail_solutions/目录下）
+【严格执行校验！！】如果必要参数有未提供的，则阻断执行，反馈用户必需提供必要参数（并给出所缺参数是什么），用户确认提供后，才能真正执行；
+
+**执行步骤**
+1. **前置校验**
+   - 确认必要参数1对应的详细设计方案文档已存在，并读取其内容作为编码实现的指导依据
+
+2. **读取背景上下文**
+   - 如果涉及后端，则读取后端技术规范文档（./ai_collaboration/rules/tech_structure_backend.md）作为编码规范依据
+   - 如果涉及web端，则读取web端技术规范文档（./ai_collaboration/rules/tech_structure_web.md）作为编码规范依据
+   - 如果涉及mobile端，则读取mobile端技术规范文档（./ai_collaboration/rules/tech_structure_mobile.md）作为编码规范依据
+
+3. **生成任务列表文档**
+   - 基于详细设计方案和各端技术规范，拆解具体开发任务，生成或更新任务列表文档（任务列表项可勾选）
+      - 若关联的任务列表文档已存在，则基于最新的方案，更新已存在的任务列表文档
+      - 若关联的任务列表文档不存在，则基于方案，生成新的任务列表文档
+   - 输出路径：./ai_collaboration/tasks/目录下
+
+4. **生成接口定义文档**
+   - 如果涉及新接口或接口变更，需生成或更新接口定义文档
+      - 若对应的接口文档已存在，则基于对应的技术方案逻辑，新增或更新对应文档中接口定义
+      - 若对应的接口文档不存在，则基于对应的详细技术方案，生成新的接口定义文档
+   - 输出路径：./ai_collaboration/docs/api_docs/目录下
+
+5. **等待确认后编码**
+   - 【严格要求确认！！】上述文档生成后，停下来主动询问并要求回复，用户是否确认任务列表和接口定义正确无误可用
+      - 如果确认有误，则需由用户提出对应的修改意见或自行修改并表达确认无误后，并重新执行上述步骤
+      - 如果用户回复"确认无误"等类似信息，则才可继续执行后续编码动作
+   - 编码落地过程中，每完成一个任务列表项，需在该任务列表文档中进行勾选标记存档
+
+**接口定义格式规范**
 
 每个接口定义格式参考如下，
-```
-接口名称
 
-（1）接口地址: `POST /api/xxx/xxx`
+```markdown
+    接口名称
 
-（2）请求参数:
+    （1）接口地址: `POST /api/xxx/xxx`
 
-| 字段 | 类型 | 必填 | 说明 |
-|------|------|------|------|
-| id | string | 是 | ID标识 |
-| config | object | 是 | 配置项 |
+    （2）请求参数:
 
-（3）响应数据:
-{
+    | 字段 | 类型 | 必填 | 说明 |
+    |------|------|------|------|
+    | id | string | 是 | 代理ID |
+    | config | object | 是 | 配置项 |
+
+    （3）响应数据:
+    {
     "code": 200,
     "message": "success",
     "data": null
-}
+    }
 ```
-接口文档命名规范：以模块名作为前缀，例如 `module_management.md`；
+
+**命名规范**：
+- 接口文档：以模块名作为前缀，例如 `collector_management.md`
+
+**参考文档**
+1. 详细设计方案的查找路径：./ai_collaboration/docs/detail_solutions/目录下
+2. 任务列表文档的生成路径：./ai_collaboration/tasks/目录下
+3. 后端技术规范路径：./ai_collaboration/rules/tech_structure_backend.md
+4. web端技术规范路径：./ai_collaboration/rules/tech_structure_web.md
+5. mobile端技术规范路径：./ai_collaboration/rules/tech_structure_mobile.md
+6. 接口定义文档写入路径：./ai_collaboration/docs/api_docs/目录下
+
+---
 
 ## 6. AI协作适用场景
 
